@@ -32,3 +32,5 @@ RUN chmod +x /usr/local/bin/install-magento
 RUN find var vendor pub/static pub/media app/etc -type f -exec chmod u+w {} \;
 RUN find var vendor pub/static pub/media app/etc -type d -exec chmod u+w {} \;
 RUN chmod u+x bin/magento
+
+RUN a2enmod rewrite

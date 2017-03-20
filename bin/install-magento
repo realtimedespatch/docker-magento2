@@ -7,3 +7,19 @@ php -d memory_limit=-1 /var/www/html/bin/magento setup:install --base-url=$MAGEN
 --currency=$MAGENTO_DEFAULT_CURRENCY --timezone=$MAGENTO_TIMEZONE --use-rewrites=1
 
 chown -R www-data:www-data /var/www/html
+
+cd /var/www
+curl https://github.com/realtimedespatch/magento2-sample-data/archive/develop.zip -Lko sample.zip
+unzip -o  sample.zip
+cd magento2-sample-data-develop
+php -f dev/tools/build-sample-data.php -- --ce-source="/var/www/html"
+chown -R www-data:www-data .
+find . -type d -exec chmod g+ws {} \;
+cd ../html/var
+rm -rf cache/* page_cache/* generation/*
+cd ../
+php -d memory_limit=-1 bin/magento sampledata:reset
+php -d memory_limit=-1 bin/magento setup:upgrade
+php -d memory_limit=-1 bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+chown -R www-data:www-data .
