@@ -18,8 +18,8 @@ find . -type d -exec chmod g+ws {} \;
 cd ../html/var
 rm -rf cache/* page_cache/* generation/*
 cd ../
-php -d memory_limit=-1 bin/magento sampledata:reset
+#php -d memory_limit=-1 bin/magento sampledata:reset
 php -d memory_limit=-1 bin/magento setup:upgrade
 php -d memory_limit=-1 bin/magento setup:di:compile
-php bin/magento setup:static-content:deploy -f
+php -d memory_limit=-1 bin/magento setup:static-content:deploy -f
 chown -R www-data:www-data .
